@@ -30,7 +30,6 @@ router.post("/addRestaurent", async (req, res) => {
   //   const user = req.body._id;
   //   const addresses = req.body.addresses;
   try {
-    const cartValue = await Product.findOneAndUpdate(query, update);
     let restaurent = new Restaurent(req.body);
     await restaurent.save();
     res.send(restaurent);

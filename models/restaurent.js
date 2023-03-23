@@ -1,7 +1,10 @@
 const Mongoose = require("mongoose");
+
+// const { ROLES, EMAIL_PROVIDER } = require('../constants');
+
 const { Schema } = Mongoose;
 
-// Restaurent Schema
+// User Schema
 const RestaurentSchema = new Schema({
   email: {
     type: String,
@@ -9,22 +12,17 @@ const RestaurentSchema = new Schema({
   },
   phoneNumber: {
     type: String,
-    required: true,
   },
-  name: {
+  restuarentName: {
     type: String,
     required: true,
+  },
+  location: {
+    type: String,
   },
   imgUrl: {
     type: String,
-    required: true,
   },
-  product: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-    },
-  ],
 });
 
 module.exports = Mongoose.model("Restaurent", RestaurentSchema);

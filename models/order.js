@@ -29,6 +29,10 @@ const OrderSchema = new Schema({
       productImage: { type: String },
     },
   ],
+  restaurent: {
+    type: Schema.Types.ObjectId,
+    ref: "Restaurent",
+  },
 });
 
 module.exports = Mongoose.model("Order", OrderSchema);

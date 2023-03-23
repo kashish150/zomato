@@ -7,15 +7,13 @@ const { Schema } = Mongoose;
 // Cart Item Schema
 const CartItemsSchema = new Schema({
   product: {
-    type: Schema.Types.ObjectId,
-    ref: "Product",
+    type: String,
   },
   quantity: {
     type: Number,
     default: 1,
   },
 });
-
 module.exports = Mongoose.model("CartItems", CartItemsSchema);
 
 // Cart Schema

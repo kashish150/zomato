@@ -12,11 +12,13 @@ router.get("/testingProductAPIs", (req, res) => {
 
 // get all addresses for a specific user
 
-router.get("/getAllProducts", async (req, res) => {
+router.get("/getAllProducts/:id", async (req, res) => {
   try {
+    const restaurentId = req.params["id"];
     // this id should be unique userid
-    const address = await AddressItems.find({ user: req.body._id });
-    res.send(address);
+    console.log(req.body);
+    const products = await Product.find({ restaurent: restaurentId });
+    res.send(products);
   } catch (err) {
     console.log(err);
     res.status(400).send("server error");
@@ -29,6 +31,7 @@ router.post("/addProducts", async (req, res) => {
   console.log(req.body);
   try {
     let products = new Product(req.body);
+    console.log(products);
     await products.save();
     res.send(products);
   } catch (err) {
