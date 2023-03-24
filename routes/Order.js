@@ -35,8 +35,9 @@ router.get("/testingOrderAPIs", (req, res) => {
   res.send("ORDER Running api ");
 });
 
-router.get("/getAllOrder", async (req, res) => {
-  const Orders = await order.find({ user: req.body.user });
+router.get("/getAllOrder/:id", async (req, res) => {
+  const userId = req.params["id"];
+  const Orders = await order.find({ user: userId });
   res.send(Orders);
 });
 

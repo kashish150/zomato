@@ -87,4 +87,18 @@ router.post("/updateCartBackend", async (req, res) => {
   }
 });
 
+router.get("/cartItems/:id", async (req, res) => {
+  const userId = req.params["id"];
+  try {
+    const cartValue = await Cart.findOne({ user: userId });
+    console.log(userId);
+    console.log(cartValue);
+    res.send(cartValue);
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).send("server error");
+    process.exit(1);
+  }
+});
+
 module.exports = router;
