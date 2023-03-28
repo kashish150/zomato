@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/product");
-
+const auth = require("../middleware/restaurentauth");
 //@route get api/ADDRESS
 
 const config = require("config");
@@ -12,10 +12,11 @@ router.get("/testingProductAPIs", (req, res) => {
 
 // get all addresses for a specific user
 
-router.get("/getAllProducts/:id", async (req, res) => {
+router.get("/getAllProducts", auth, async (req, res) => {
   try {
-    const restaurentId = req.params["id"];
-    // this id should be unique userid
+    const restaurentId = req.restaurent.id;
+    // this id should be unique userid\console.log(req.body);
+    console.log("ferefr");
     console.log(req.body);
     const products = await Product.find({ restaurent: restaurentId });
     res.send(products);
@@ -27,10 +28,17 @@ router.get("/getAllProducts/:id", async (req, res) => {
 
 // adding a address
 
-router.post("/addProducts", async (req, res) => {
+router.post("/addProducts", auth, async (req, res) => {
   console.log(req.body);
   try {
-    let products = new Product(req.body);
+    let products = new Product({
+      restaurent: req.restaurent.id,
+      imageUrl: req.body.imageUrl,
+      description: req.body.description,
+      quantityAvailable: req.body.quantityAvailable,
+      pricePerQuantity: req.body.pricePerQuantity,
+      name: req.body.name,
+    });
     console.log(products);
     await products.save();
     res.send(products);
@@ -56,9 +64,9 @@ router.delete("/deleteProducts", async (req, res) => {
   }
 });
 
-router.put("/updateProducts/:id", async (req, res) => {
+router.put("/updateProducts", async (req, res) => {
   try {
-    const productId = req.params["id"];
+    const productId = req.restaurent.id;
     const update = req.body;
     const query = { _id: productId };
     const productValue = await Product.findOneAndUpdate(query, update);

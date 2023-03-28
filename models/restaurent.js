@@ -23,6 +23,10 @@ const RestaurentSchema = new Schema({
   imgUrl: {
     type: String,
   },
+  password: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = Mongoose.model("Restaurent", RestaurentSchema);

@@ -4,6 +4,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const order = require("../models/order");
+const auth = require("../middleware/restaurentauth");
 const cors = require("cors");
 app.use(cors());
 // const config = require("config");
@@ -41,9 +42,9 @@ router.get("/getAllOrder/:id", async (req, res) => {
   res.send(Orders);
 });
 
-router.get("/getRestaurentOrders/:id", async (req, res) => {
+router.get("/getRestaurentOrders", auth, async (req, res) => {
   try {
-    const restaurentId = req.params["id"];
+    const restaurentId = req.restaurent.id;
     console.log(restaurentId);
     const Orders = await order.find({ restaurent: restaurentId });
     res.send(Orders);
@@ -100,13 +101,14 @@ router.post("/placeorder", async (req, res) => {
 
 // update order status by restaurent
 
-router.post("/updateStatus", async (req, res) => {
+router.post("/updateStatus", auth, async (req, res) => {
   try {
+    console.log(req.body);
     const orderId = req.body.orderId;
-    const restaurentId = req.body.restaurentId;
+    const restaurentId = req.restaurent.id;
     const query = { _id: orderId, restaurent: restaurentId };
-    console.log(orderId);
-    console.log(restaurentId);
+    console.log(orderId + " orderId");
+    console.log(restaurentId) + " restaurentId";
     const OrdersttausUpdation = await order.findOneAndUpdate(
       query,
       { $set: { status: req.body.status } },
