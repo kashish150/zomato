@@ -3,6 +3,7 @@ const router = express.Router();
 const Cart = require("../models/cart");
 const config = require("config");
 const mongoose = require("mongoose");
+const userauth = require("../middleware/userauth");
 router.get("/", (req, res) => {
   res.send("ADDRESS USER Running api ");
 });
@@ -29,7 +30,7 @@ router.post("/updateCart", async (req, res) => {
   }
 });
 
-router.post("/updateCartBackend", async (req, res) => {
+router.post("/updateCartBackend", userauth, async (req, res) => {
   const userId = req.body.user;
   try {
     const cartValue = await Cart.findOne({ user: userId });
@@ -66,6 +67,8 @@ router.post("/updateCartBackend", async (req, res) => {
         _id: new mongoose.Types.ObjectId(),
         product: req.body.newProduct.product,
         quantity: req.body.newProduct.quantity,
+        productName: req.body.newProduct.productName,
+        productPrice: req.body.newProduct.productPrice,
       });
 
       let cartJson = {
@@ -87,12 +90,13 @@ router.post("/updateCartBackend", async (req, res) => {
   }
 });
 
-router.get("/cartItems/:id", async (req, res) => {
-  const userId = req.params["id"];
+router.get("/cartItems", userauth, async (req, res) => {
+  const userId = req.user;
   try {
     const cartValue = await Cart.findOne({ user: userId });
-    console.log(userId);
+    // console.log(userId);
     console.log(cartValue);
+
     res.send(cartValue);
   } catch (err) {
     console.log(err.message);

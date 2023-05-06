@@ -13,6 +13,13 @@ const CartItemsSchema = new Schema({
     type: Number,
     default: 1,
   },
+  productName: {
+    type: String,
+  },
+  productPrice: {
+    type: Number,
+    default: 1,
+  },
 });
 module.exports = Mongoose.model("CartItems", CartItemsSchema);
 

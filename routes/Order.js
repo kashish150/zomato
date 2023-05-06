@@ -4,9 +4,11 @@ const router = express.Router();
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const order = require("../models/order");
+const userauth = require("../middleware/userauth");
 const auth = require("../middleware/restaurentauth");
 const cors = require("cors");
 app.use(cors());
+
 // const config = require("config");
 // const http = require("http");
 // const server = http.createServer(app);
@@ -36,8 +38,8 @@ router.get("/testingOrderAPIs", (req, res) => {
   res.send("ORDER Running api ");
 });
 
-router.get("/getAllOrder/:id", async (req, res) => {
-  const userId = req.params["id"];
+router.get("/getAllOrder", userauth, async (req, res) => {
+  const userId = req.user;
   const Orders = await order.find({ user: userId });
   res.send(Orders);
 });
@@ -55,9 +57,9 @@ router.get("/getRestaurentOrders", auth, async (req, res) => {
   }
 });
 
-router.post("/placeorder", async (req, res) => {
+router.post("/placeorder", userauth, async (req, res) => {
   try {
-    const cartValue = await Cart.findOne({ user: req.body.user });
+    const cartValue = await Cart.findOne({ user: req.user });
     let cartItems = cartValue.cartItems;
     let products = [];
     io.emit("Data", "emit");

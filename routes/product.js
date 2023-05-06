@@ -16,8 +16,23 @@ router.get("/getAllProducts", auth, async (req, res) => {
   try {
     const restaurentId = req.restaurent.id;
     // this id should be unique userid\console.log(req.body);
-    console.log("ferefr");
+    console.log("check1");
     console.log(req.body);
+    const products = await Product.find({ restaurent: restaurentId });
+    res.send(products);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("server error");
+  }
+});
+
+router.get("/getAllProductsUser/:id", async (req, res) => {
+  try {
+    const restaurentId = req.params["id"];
+    console.log(restaurentId);
+    // this id should be unique userid\console.log(req.body);
+    console.log("check2");
+    console.log(restaurentId);
     const products = await Product.find({ restaurent: restaurentId });
     res.send(products);
   } catch (err) {
@@ -64,8 +79,9 @@ router.delete("/deleteProducts", async (req, res) => {
   }
 });
 
-router.put("/updateProducts", async (req, res) => {
+router.put("/updateProducts", auth, async (req, res) => {
   try {
+    console.log("updatehebfjherf");
     const productId = req.restaurent.id;
     const update = req.body;
     const query = { _id: productId };
