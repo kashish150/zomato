@@ -31,7 +31,7 @@ router.post("/updateCart", async (req, res) => {
 });
 
 router.post("/updateCartBackend", userauth, async (req, res) => {
-  const userId = req.body.user;
+  const userId = req.user;
   try {
     const cartValue = await Cart.findOne({ user: userId });
     console.log("user");
@@ -94,7 +94,7 @@ router.get("/cartItems", userauth, async (req, res) => {
   const userId = req.user;
   try {
     const cartValue = await Cart.findOne({ user: userId });
-    // console.log(userId);
+    console.log(userId);
     console.log(cartValue);
 
     res.send(cartValue);
