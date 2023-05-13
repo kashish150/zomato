@@ -14,7 +14,7 @@ router.get("/testingProductAPIs", (req, res) => {
 
 router.get("/getAllProducts", auth, async (req, res) => {
   try {
-    const restaurentId = req.restaurent.id;
+    const restaurentId = req.restaurent;
     // this id should be unique userid\console.log(req.body);
     console.log("check1");
     console.log(req.body);

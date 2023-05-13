@@ -46,7 +46,7 @@ router.get("/getAllOrder", userauth, async (req, res) => {
 
 router.get("/getRestaurentOrders", auth, async (req, res) => {
   try {
-    const restaurentId = req.restaurent.id;
+    const restaurentId = req.restaurent;
     console.log(restaurentId);
     const Orders = await order.find({ restaurent: restaurentId });
     res.send(Orders);
@@ -85,7 +85,7 @@ router.post("/placeorder", userauth, async (req, res) => {
       products.push(newElemet);
     }
     let orderObject = new order({
-      user: req.body.user,
+      user: req.user,
       products: products,
       totalAmount: sumAmount,
       restaurent: restaurent,
@@ -107,10 +107,10 @@ router.post("/updateStatus", auth, async (req, res) => {
   try {
     console.log(req.body);
     const orderId = req.body.orderId;
-    const restaurentId = req.restaurent.id;
+    const restaurentId = req.restaurent;
     const query = { _id: orderId, restaurent: restaurentId };
     console.log(orderId + " orderId");
-    console.log(restaurentId) + " restaurentId";
+    console.log(restaurentId + " restaurentId");
     const OrdersttausUpdation = await order.findOneAndUpdate(
       query,
       { $set: { status: req.body.status } },

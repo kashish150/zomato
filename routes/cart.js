@@ -10,34 +10,39 @@ router.get("/", (req, res) => {
 
 // USING WHOLE FRONTEND SIDE VALUE UPDATION ALSO
 
-router.post("/updateCart", async (req, res) => {
-  const userId = req.body.userId;
-  try {
-    const cartValue = await Cart.find({ user: userId });
-    if (cartValue) {
-      const query = { user: userId };
-      const cartValue = await Cart.findOneAndUpdate(query, req.body);
-      res.send(cartValue);
-    } else {
-      let cart = new Cart(req.body);
-      await cart.save();
-      res.send(cart);
-    }
-  } catch (err) {
-    console.log(err.message);
-    res.status(400).send("server error");
-    process.exit(1);
-  }
-});
+// router.post("/updateCart", async (req, res) => {
+//   const userId = req.body.userId;
+//   try {
+//     const cartValue = await Cart.find({ user: userId });
+//     if (cartValue) {
+//       const query = { user: userId };
+//       const cartValue = await Cart.findOneAndUpdate(query, req.body);
+//       res.send(cartValue);
+//     } else {
+//       let cart = new Cart(req.body);
+//       await cart.save();
+//       res.send(cart);
+//     }
+//   } catch (err) {
+//     console.log(err.message);
+//     res.status(400).send("server error");
+//     process.exit(1);
+//   }
+// });
 
 router.post("/updateCartBackend", userauth, async (req, res) => {
   const userId = req.user;
+  console.log(userId);
   try {
     const cartValue = await Cart.findOne({ user: userId });
     console.log("user");
     if (cartValue) {
       const query = { user: userId };
       let product = req.body.newProduct.product;
+      // if (req.body.newProduct.quantity <= 0) {
+      //   console.log("quantity less than 0");
+      //   res.status(400).send("server error");
+      // }
       let quantityUpdate = req.body.newProduct.quantity;
       let products = cartValue.cartItems;
       let checkProductIdIsThereOrNot = products.find(
